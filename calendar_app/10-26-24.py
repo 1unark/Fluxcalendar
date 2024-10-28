@@ -1,3 +1,16 @@
+from flask import Flask, render_template, request
+
+app = Flask(__name__)
+
+@app.route("/", methods=["GET", "POST"])
+def index():
+    schedule_info = None
+    if request.method == "POST":
+        user_input = request.form['user_input']
+        schedule_info = extract_schedule_info(user_input)
+    return render_template("index.html", schedule_info=schedule_info)
+
+
 import tensorflow as tf
 
 # Use a pipeline as a high-level helper
