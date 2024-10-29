@@ -1,3 +1,15 @@
+from flask import Flask, render_template, request
+
+app = Flask(__name__)
+
+@app.route("/", methods=["GET", "POST"])
+def index():
+    schedule_info = None
+    if request.method == "POST":
+        user_input = request.form['user_input']
+        schedule_info = extract_schedule_info(user_input)
+    return render_template("index.html", schedule_info=schedule_info)
+
 
 import tensorflow as tf
 
@@ -42,7 +54,7 @@ def extract_schedule_info(user_input):
     # If event is still empty, use regex to find the main event description
     if not event:
         # Capture everything after "I have" up to the next "at" or "on"
-        main_event_pattern = r'(?i)(?:I have|I need|I will|attend|working on|I want|work|homework|task|project|event|meeting|activity|upcoming)?\s*(.*?)(?=\s+at\s+|\s+on\s+|$)'
+        main_event_pattern = r'(?i)(?:I have|I need|I will|I want|work|homework|task|project|event|meeting|activity|upcoming)?\s*(.*?)(?=\s+at\s+|\s+on\s+|$)'
         main_event_match = re.search(main_event_pattern, user_input)
 
         if main_event_match:
